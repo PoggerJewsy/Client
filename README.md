@@ -2,7 +2,6 @@
 
 - [ ] Get password list
 - [ ] SSH
-1. configure port forwarding
 - [ ] Reverse Shell
 1. check for update
 2. reconnect on true
@@ -12,3 +11,7 @@
 - [ ] autostart with windows
 - [ ] hide process as service
 - [ ] upload the files
+
+#### 1.configure port forwarding
+#### 2.scan ports
+#### 3.scan peers

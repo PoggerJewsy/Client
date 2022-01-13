@@ -4,26 +4,42 @@ import paramiko
 import threading
 import sys
 import getpass
-#TODO: dynamicly get creds 
+
+
+
+
+
+#TODO: add custom commands
+
+
+#TODO: dynamicly get creds idea : encoders         
+
+
 #TODO: implement client side of ssh
 
-# e.g. /home/<username>/.ssh/id_rsa.pub
-rsa_key = ""
+
+# e.g. /home/<username>/.ssh/id_rsa
+
+
+rsa_key = "private rsa key e.g /home/user/.ssh/id_rsa"
 #get credentials 
-username = input("username : ")
-password = getpass.getpass()
-credentials = {
-	"username": username,
-	"password": password
-}
+username = "root"
+# password = getpass.getpass()
+password = "PASSWORD"
 
 
 key = paramiko.RSAKey(filename=rsa_key)
 
 class Server (paramiko.ServerInterface):
-	def __init__(self,username, password, kind , chanid, ip):
+	def __init__(self, ip):
 		self.event = threading.Event()
-		self.run(self.username, self.password, self.kind , self.chanid, self.ip)
+		self.username = username
+		self.password = password
+		self.ip = ip
+		self.credentials = {
+			"username": username,
+			"password": password
+		}
 	
 	def check_request(self, kind, chanid):
 		if self.kind == 'session':
@@ -32,7 +48,7 @@ class Server (paramiko.ServerInterface):
 	
 
 	def check_credentials(self, username , password):
-		if username == credentials["username"] and password == credentials["password"]:
+		if self.username == self.credentials["username"] and self.password == self.credentials["password"]:
 
 			return paramiko.AUTH_SUCCESSFUL
 		return paramiko.AUTH_FAILED
@@ -45,41 +61,41 @@ class Server (paramiko.ServerInterface):
 			session.bind((self.ip, 22))
 			session.listen(100)
 			print ("[*] Listening for connection .....")
-			client , addr = sock.accept()
+			client , addr = session.accept()
 			print ("[+] Connection Established")
-		except Exception, e:
+		except Exception as e:
 			print ("[-] Connection failed: " + str(e))
 
 	def trasport(self):
-		client = self.listener.client
-		t = paramiko.Trasport(client)		
 		try:
-			t.load_server_moduli()
+			client = self.listener.client
+			t = paramiko.Trasport(client)		
+			try:
+				t.load_server_moduli()
+			except:
+				print("[-] failed to load moduli")
+				raise Exception
+			t.add_server_key(key)
+			server = Server()
+			try:
+				t.start_server(server=server)
+			except paramiko.SSHExeption as  x:
+				print ("[-] SSH hadnshake failed" + str(x))
+
+			chan = t.accept(20)
+			print ("[+] Authenticated")
+			print (chan.recv(1024))
+			chan.send('ifconfig')
+
+		except Exception as e:
+			print ("[-] Error occured: " + str(e))
+		try:
+			t.close()
 		except:
-			print("[-] failed to load moduli")
-			raise
-		t.add_server_key(key)
-		server = Server()
-		try:
-			t.start_server(server=server)
-		except paramiko.SSHExeption, x:
-			print ("[-] SSH hadnshake failed")
+			pass
+			sys.exit(1)
 
-		chan = t.accept(20)
-		print ("[+] Authenticated")
-		print (chan.recv(1024))
-		chan.send('CMD TO SEND')
-
-	except Exception, e:
-		print ("[-] Error occured: " str(e.class) + ":" str(e))
-	try:
-		t.close()
-	except:
-		pass
-		sys.exit(1)
-
-	def run(self, username, password, kind , chanid, ip):
-		self.check_request(self.kind, chanid)
+	def run(self):
 		self.check_credentials(self.username,self.password)
 		self.listener(self.ip)
 		self.trasport()
@@ -90,4 +106,6 @@ class Server (paramiko.ServerInterface):
 
 
 
-
+if __name__ == "__main__":
+    server = Server("127.0.0.1")
+    server.run()

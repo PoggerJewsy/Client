@@ -1,7 +1,7 @@
 # Client
 
-- [ ] Get password list
-- [ ] SSH
+- [x] Get password list
+- [x] SSH
 - [ ] Reverse Shell
 1. check for update
 2. reconnect on true

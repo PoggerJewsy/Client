@@ -1,13 +1,13 @@
 # Client
 
-- [x] Get password list
-- [] SSH
+- [ ] Get password list
+- [x] SSH
 - [x] Reverse Shell
-1. [ ] check for update
-2. [ ] reconnect on true
+  1. [ ] check for update
+  2. [ ] reconnect on true
 - [x] Custom Command Execution
-1. [ ] check if ready to get command
-2. [x] execute command
+  1. [ ] check if ready to get command
+  2. [x] execute command
 - [x] autostart with windows
 - [x] hide process as service
 - [x] upload the files

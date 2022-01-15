@@ -1,7 +1,7 @@
 # Client
 
 - [x] Get password list
-- [x] SSH
+- [] SSH
 - [x] Reverse Shell
 1. [ ] check for update
 2. [ ] reconnect on true
@@ -13,5 +13,5 @@
 - [x] upload the files
 
 #### 1.configure port forwarding
-#### 2.scan ports
+#### 2.scan ports - Done
 #### 3.scan peers

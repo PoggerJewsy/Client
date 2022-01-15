@@ -1,6 +1,6 @@
 # Client
 
-- [ ] Get password list
+- [x] Get password list
 - [x] SSH
 - [x] Reverse Shell
   1. [ ] check for update

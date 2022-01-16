@@ -1,5 +1,13 @@
 # Client
 
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install scapy
+pip install -r requrements.txt
+
+```
+
 - [x] Get password list
 - [x] SSH
 - [x] Reverse Shell

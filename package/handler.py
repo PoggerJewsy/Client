@@ -69,5 +69,5 @@ class Listener():
             print (result)
 
 
-app = Listener("<YOUR IP>", 80)
+app = Listener("127.0.0.1", 80)
 app.run()

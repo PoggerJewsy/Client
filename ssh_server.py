@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import socket
 import paramiko
 import threading
 import sys
 import getpass
 """
-Custom SSH for Malware Although we already have a custom command execution i dunno man im fucked up ......***....... 
+Custom SSH for Malware  ......***....... 
 
 $ ssh-keygen 
 make a rsa key

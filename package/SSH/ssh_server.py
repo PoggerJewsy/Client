@@ -5,6 +5,8 @@ import threading
 import sys
 import getpass
 """
+PLAN B
+
 Custom SSH for Malware  ......***....... 
 
 $ ssh-keygen 

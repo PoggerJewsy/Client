@@ -13,10 +13,10 @@ pip install -r requrements.txt
 - [x] Get password list
 - [x] SSH
 - [x] Reverse Shell
-  1. [ ] check for update
-  2. [ ] reconnect on true
+  1. [x] check for update
+  2. [x] reconnect on true
 - [x] Custom Command Execution
-  1. [ ] check if ready to get command
+  1. [x] check if ready to get command
   2. [x] execute command
 - [x] autostart with windows
 - [x] hide process as service

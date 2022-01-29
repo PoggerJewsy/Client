@@ -1,0 +1,4 @@
+- Encrypt Connecton 
+- No Hardcoded Password
+- Fuzz Executable so no reverse engineering
+- Fuck BghSch

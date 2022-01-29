@@ -30,7 +30,7 @@ class Server (paramiko.ServerInterface):
        if kind == 'session':
            return paramiko.OPEN_SUCCEEDED
        return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
-   
+   # USER & PASS  
    def check_auth_password(self, username, password):
        if (username == "user") and (password == "1234"):
            return paramiko.AUTH_SUCCESSFUL

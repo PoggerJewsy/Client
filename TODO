@@ -1,3 +1,4 @@
+- Fix sending and recieving command problem (probably firewall blocking the requests)
 - Encrypt Connecton 
 - No Hardcoded Password
 - Fuzz Executable so no reverse engineering

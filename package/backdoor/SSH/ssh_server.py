@@ -3,13 +3,14 @@ import socket
 import paramiko
 import threading
 import sys
-import getpass
+
 """
 PLAN B
 
 Custom SSH for Malware  ......***....... 
 
 $ ssh-keygen 
+
 make a rsa key
 
 put the full path in hostkey e.g /home/user/.ssh/id_rsa.key

@@ -2,8 +2,8 @@
 import socket, json, base64
 
 
-IP = "" # change this
-PORT = 80 # change this (Integer Only)
+IP = "0.0.0.0" # change this
+PORT = 4445 # change this (Integer Only)
 
 
 class Listener:

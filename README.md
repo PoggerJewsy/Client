@@ -1,5 +1,6 @@
 # Client
-# So fUCKING BUG  is Fixed but still our file transfer functonality does not work so fuck life 
+# TODO:
+# [ ] File transfer functonality does not work properly 
 
 
 

